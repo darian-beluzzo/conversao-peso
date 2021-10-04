@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-conversao-peso
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-conversao-peso
+  template:
+    metadata:
+      labels:
+        app: app-conversao-peso
+    spec:
+      containers:
+      - name: app-conversao-peso
+        image: darianbeluzzo/conversao-peso:1.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-conversao-peso
+spec:
+  selector:
+    app: app-conversao-peso
+  ports:
+    - port: 80
+      nodePort: 30000
+  type: LoadBalancer
